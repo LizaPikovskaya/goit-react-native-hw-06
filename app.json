@@ -11,13 +11,24 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ]
     ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.yourcompany.goit-react-native-hw-06",
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyDOvJLEkORsqN3TuQ07jnOjTD0dDy2jl9Q"
+      }
     },
     "android": {
+      "package": "com.yourcompany.goit-react-native-hw-06",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
