@@ -11,6 +11,7 @@ import {
   getAllPostsFirebase,
   postsCollectionRef,
 } from "../servises/posts.services";
+import { onSnapshot } from "firebase/firestore";
 
 export const PostsScreen = () => {
   const posts = useSelector(selectPosts);
@@ -18,20 +19,29 @@ export const PostsScreen = () => {
 
   const [user, setUser] = useState(null);
   const [postsData, setPostsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    getPosts();
-  }, []);
+
+useEffect(()=>{
+  getPosts()
+},[])
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(postsCollectionRef, (snapshot) => {
+  //     const newData = snapshot.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }));
+  //     setPostsData(setPostsData);
+  //   });
+
+  //   return () => unsubscribe();
+  // }, []);
 
   const getPosts = async () => {
     try {
-      setIsLoading(true);
       const data = await getAllPostsFirebase();
       setPostsData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
     }
   };
 
@@ -62,7 +72,6 @@ export const PostsScreen = () => {
 
   return (
     <>
-      {isLoading && <Text>Loading...</Text>}
       {/* <ScrollView style={{ flex: 1, backgroundColor: "#fff" }}> */}
       <View
         style={[
@@ -120,6 +129,7 @@ export const PostsScreen = () => {
               commentsNumber={item.commentsNumber}
               country={item.locationName}
               coords={item.location}
+              getPosts={getPosts}
             />
           )}
         ></FlatList>
