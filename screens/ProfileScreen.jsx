@@ -4,8 +4,13 @@ import { View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { CloseIcon, LogoutIcon } from "../components/icons/Icons";
 import { ProfilePost } from "../components/ProfilePost";
+import { useSelector } from "react-redux";
+import { selectUserName } from "../redux/selectors";
+import { auth } from "../config";
+
 
 export const ProfileScreen = () => {
+  const userName = auth.currentUser?.displayName;
   return (
     <BackgroundComponent>
       {/* <ScrollView style={{ flex: 1 }} > */}
@@ -19,31 +24,30 @@ export const ProfileScreen = () => {
             <CloseIcon />
           </TouchableOpacity>
         </View>
-        <Text style={styles.text}>Natali Romanova</Text>
-        <ScrollView >
-
-        <ProfilePost
-          way={require("../assets/images/sky.jpg")}
-          name={"Ліс"}
-          commentsNumber={8}
-          country={"Ukraine"}
-          likes={153}
-        />
-        <ProfilePost
-          way={require("../assets/images/sunset.jpg")}
-          name={"Захід на Чорному морі"}
-          commentsNumber={2}
-          country={"Ukraine"}
-          likes={200}
-        />
-        <ProfilePost
-          way={require("../assets/images/house.jpg")}
-          name={"Старий будиночок у Венеції"}
-          commentsNumber={50}
-          country={"Italy"}
-          likes={200}
-        />
-      </ScrollView>
+        <Text style={styles.text}>{userName}</Text>
+        <ScrollView>
+          <ProfilePost
+            way={require("../assets/images/sky.jpg")}
+            name={"Ліс"}
+            commentsNumber={8}
+            country={"Ukraine"}
+            likes={153}
+          />
+          <ProfilePost
+            way={require("../assets/images/sunset.jpg")}
+            name={"Захід на Чорному морі"}
+            commentsNumber={2}
+            country={"Ukraine"}
+            likes={200}
+          />
+          <ProfilePost
+            way={require("../assets/images/house.jpg")}
+            name={"Старий будиночок у Венеції"}
+            commentsNumber={50}
+            country={"Italy"}
+            likes={200}
+          />
+        </ScrollView>
       </View>
     </BackgroundComponent>
   );
@@ -51,16 +55,16 @@ export const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingLeft:16,
-    paddingRight:16,
-    height: '80%',
-    width:'100%',
+    paddingLeft: 16,
+    paddingRight: 16,
+    height: "80%",
+    width: "100%",
     backgroundColor: "white",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-    alignContent:'flex-end'
+    alignContent: "flex-end",
   },
   photoWrapper: {
     width: 120,
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 92,
-    marginBottom:32,
+    marginBottom: 32,
     textAlign: "center",
     fontFamily: "Roboto-Medium",
     fontSize: 30,

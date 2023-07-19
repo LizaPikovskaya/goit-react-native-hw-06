@@ -1,5 +1,5 @@
 {
-  "name": "goit-react-native-hw-05",
+  "name": "goit-react-native-hw-06",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -29,7 +29,10 @@
     "react-native-svg": "^13.10.0",
     "react-native-uuid": "^2.0.1",
     "react-redux": "^8.1.1",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "react-native-web": "~0.18.10",
+    "react-dom": "18.2.0",
+    "@expo/webpack-config": "^18.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

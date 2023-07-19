@@ -14,19 +14,40 @@ import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { BackgroundComponent } from "../components/BackgroundComponent";
+import { useDispatch } from "react-redux";
+import { logIn } from "../redux/authSlice";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config";
 
 export const Login = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
-  const handleSubmit = (evt) => {
-    console.log({ email, password });
-  };
+
+  // const handleSubmit = (evt) => {
+  //   console.log({ email, password });
+  // };
   const togglePassword = () => {
     setSecureTextEntry(!secureTextEntry);
-    navigation.navigate('Home')
+    navigation.navigate("Home");
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const credentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      dispatch(logIn({ email, password }));
+      navigation.navigate("Home")
+      return credentials.user;
+    } catch (error) {
+      alert(error.message);
+    }
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

@@ -20,6 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { addPost } from "../redux/postSlice";
 import * as Location from "expo-location";
+import { addPostFirebase } from "../servises/posts.services";
 
 export const CreatePostsScreen = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ export const CreatePostsScreen = () => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photoUri, setPhotoUri] = useState(null);
   const [location, setLocation] = useState(null);
+  console.log(location);
 
   useEffect(() => {
     (async () => {
@@ -54,16 +56,38 @@ export const CreatePostsScreen = () => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       };
-    
-      setLocation(coords)
-      console.log(coords);;
-    })();
-    dispatch(addPost({ photoName, locationName, photoUri, location }));
-    navigation.navigate("Home", { screen: "Posts" });
-    setPhotoName('')
-    setLocationName('')
-    setPhotoUri(null)
+      setLocation(coords);
+      try {
+        await addPostFirebase({
+          photoName,
+          locationName,
+          photoUri,
+          location: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          },
+          commentsNumber: 0,
+        });
 
+
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+
+    dispatch(
+      addPost({
+        photoName,
+        locationName,
+        photoUri,
+        location,
+        commentsNumber: 0,
+      })
+    );
+    navigation.navigate("Home", { screen: "Posts" });
+    setPhotoName("");
+    setLocationName("");
+    setPhotoUri(null);
   };
   const takePicture = async () => {
     if (cameraRef) {
@@ -74,8 +98,15 @@ export const CreatePostsScreen = () => {
   };
   if (hasCameraPermission === null) {
     return (
-      <View style={{ flex: 1, backgroundColor: "white" }}>
-        <Text>Loading...</Text>
+      <View
+        style={[
+          globalStyles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <Text style={{ fontFamily: "Roboto-Medium", fontSize: 22 }}>
+          Loading...
+        </Text>
       </View>
     );
   }

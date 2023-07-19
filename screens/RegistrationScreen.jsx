@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,8 +15,15 @@ import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 import { BackgroundComponent } from "../components/BackgroundComponent";
 import { PlusIcon } from "../components/icons/Icons";
+import { auth } from "../config";
+import { updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
+
+import { createUser } from "../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+// import { selectUser } from "../redux/selectors";
 
 export const Registration = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -24,13 +31,37 @@ export const Registration = () => {
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+
   const togglePassword = () => {
     setSecureTextEntry(!secureTextEntry);
   };
-  const handleSubmit = (evt) => {
+  const updateUserProfile = async (user) => {
+    // const user = auth.currentUser;
+    if (user) {
+      try {
+        await updateProfile({ displayName: login });
+      } catch (error) {
+        throw error;
+      }
+    }
+  };
+  const handleSingUp = (evt) => {
     console.log({ login, email, password });
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userInfo) => {
+        const user = userInfo.user
+        updateUserProfile(user);
+        console.log(user);
+        dispatch(createUser({ email, password }));
+        // alert(`The user ${user.email} was created.`);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+
     navigation.navigate("Home");
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={globalStyles.container}>
@@ -90,7 +121,7 @@ export const Registration = () => {
                 {/* <View style={styles.button}>
             <Button title="Зареєстуватися" color={"white"} />
           </View> */}
-                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <TouchableOpacity style={styles.button} onPress={handleSingUp}>
                   <Text style={[styles.commonTextParams, styles.buttonText]}>
                     Зареєстуватися
                   </Text>

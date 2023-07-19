@@ -3,14 +3,67 @@ import { FlatList, Image, SafeAreaView, StyleSheet, Text } from "react-native";
 import { View, ScrollView } from "react-native";
 import { globalStyles } from "../globalStyles";
 import Post from "../components/Post";
-import { useSelector } from "react-redux";
-import { selectPosts } from "../redux/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { selectEmail, selectPosts, selectUserName } from "../redux/selectors";
+import { auth } from "../config";
+import { useEffect, useState } from "react";
+import {
+  getAllPostsFirebase,
+  postsCollectionRef,
+} from "../servises/posts.services";
 
 export const PostsScreen = () => {
   const posts = useSelector(selectPosts);
-  console.log(posts);
+  const dispatch = useDispatch();
+
+  const [user, setUser] = useState(null);
+  const [postsData, setPostsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  const getPosts = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getAllPostsFirebase();
+      setPostsData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  if (!user) {
+    return (
+      <View
+        style={[
+          globalStyles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <Text style={{ fontFamily: "Roboto-Medium", fontSize: 22 }}>
+          Please, wait...
+        </Text>
+      </View>
+    );
+  }
+
   return (
-    <ScrollView style={{ flex: 1,backgroundColor:'#fff' }}>
+    <>
+      {isLoading && <Text>Loading...</Text>}
+      {/* <ScrollView style={{ flex: 1, backgroundColor: "#fff" }}> */}
       <View
         style={[
           globalStyles.container,
@@ -41,7 +94,7 @@ export const PostsScreen = () => {
                 fontSize: 13,
               }}
             >
-              Natali Romanova
+              {user?.displayName}
             </Text>
             <Text
               style={{
@@ -51,46 +104,28 @@ export const PostsScreen = () => {
                 color: "#212121CC",
               }}
             >
-              email@example.com
+              {user?.email}
             </Text>
           </View>
         </View>
         {/* <SafeAreaView style={{ flex: 1 }}> */}
         <FlatList
-          data={posts}
+          data={postsData}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Post
-              // key={item.key}
-              way={item.imageUrl}
-              name={item.name}
+              id={item.id}
+              imageUrl={item.photoUri}
+              name={item.photoName}
               commentsNumber={item.commentsNumber}
-              country={item.location}
-              coords={item.coords}
+              country={item.locationName}
+              coords={item.location}
             />
           )}
         ></FlatList>
         {/* </SafeAreaView> */}
-
-        {/* <Post
-          way={require("../assets/images/sky.jpg")}
-          name={"Ліс"}
-          commentsNumber={0}
-          country={"Ivano-Frankivs'k Region, Ukraine"}
-        />
-        <Post
-          way={require("../assets/images/sunset.jpg")}
-          name={"Захід на Чорному морі"}
-          commentsNumber={0}
-          country={"Ukraine"}
-        />
-        <Post
-          way={require("../assets/images/house.jpg")}
-          name={"Старий будиночок у Венеції"}
-          commentsNumber={0}
-          country={"Ukraine"}
-        /> */}
       </View>
-    </ScrollView>
+      {/* </ScrollView> */}
+    </>
   );
 };
