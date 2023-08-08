@@ -3,9 +3,15 @@ import { View } from "react-native";
 import { Comments, LocationIcon, Trash } from "../components/icons/Icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../config";
-import { addDoc, collection, deleteDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import {
   deletePostFirebase,
   getAllPostsFirebase,
@@ -21,21 +27,47 @@ const Post = ({
   getPosts,
 }) => {
   const [location, setLocation] = useState(null);
+  const [commentsData, setCommentsData] = useState([]);
+  console.log(commentsData);
   const navigation = useNavigation();
-  // const [isLoading, setIsLoading] = useState(false);
-
   const postId = id;
 
+  // useEffect(() => {
+  //   getComments(postId);
+  // }, []);
+
+  // const getComments = async (postId) => {
+  //   const commentsRef = collection(db, "posts", postId, "comments");
+  //   const commentsSnapshot = await getDocs(
+  //     collection(db, "posts", postId, "comments")
+  //   );
+  //   const comments = commentsSnapshot.docs.map((doc) => ({
+  //     ...doc.data(),
+  //     id: doc.id,
+  //   }));
+  //   setCommentsData(comments);
+  // };
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "posts", postId, "comments"),
+      (snapshot) => {
+        const newCommentsData = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setCommentsData(newCommentsData);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+
   const handleDeletePost = async (id) => {
-    // setIsLoading(true);
     try {
       deletePostFirebase(id);
       alert("Deleted succesufully");
     } catch (error) {
-      // setIsLoading(false);
       console.log(error);
-    } finally {
-      // setIsLoading(false);
     }
   };
   return (
@@ -95,7 +127,7 @@ const Post = ({
                 },
               ]}
             >
-              {commentsNumber}
+              {commentsData.length}
             </Text>
           </View>
 

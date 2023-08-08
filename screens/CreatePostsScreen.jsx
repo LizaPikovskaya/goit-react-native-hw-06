@@ -34,7 +34,6 @@ export const CreatePostsScreen = () => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photoUri, setPhotoUri] = useState(null);
   const [location, setLocation] = useState(null);
-  console.log(location);
 
   useEffect(() => {
     (async () => {

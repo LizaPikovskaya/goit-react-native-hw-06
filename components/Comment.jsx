@@ -3,9 +3,9 @@ import { Image, View,Text } from "react-native";
 const Comment = ({
   time,
   img,
-  direction = "row",
+  direction = "row-reverse",
   text,
-  textAlign = "right",
+  textAlign = "left",
 }) => {
   return (
     <View style={{ flexDirection: direction, gap: 16, marginBottom: 24 }}>

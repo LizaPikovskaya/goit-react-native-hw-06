@@ -20,30 +20,16 @@ export const PostsScreen = () => {
   const [user, setUser] = useState(null);
   const [postsData, setPostsData] = useState([]);
 
-useEffect(()=>{
-  getPosts()
-},[])
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(postsCollectionRef, (snapshot) => {
-  //     const newData = snapshot.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-  //     setPostsData(setPostsData);
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
-
-  const getPosts = async () => {
-    try {
-      const data = await getAllPostsFirebase();
-      setPostsData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    } catch (error) {
-      console.log(error);
-    } finally {
-    }
-  };
+  useEffect(() => {
+    const unsubscribe = onSnapshot(postsCollectionRef, (snapshot) => {
+      const newData = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setPostsData(newData);
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -129,7 +115,6 @@ useEffect(()=>{
               commentsNumber={item.commentsNumber}
               country={item.locationName}
               coords={item.location}
-              getPosts={getPosts}
             />
           )}
         ></FlatList>
