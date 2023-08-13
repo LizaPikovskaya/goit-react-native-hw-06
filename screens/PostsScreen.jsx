@@ -4,7 +4,13 @@ import { View, ScrollView } from "react-native";
 import { globalStyles } from "../globalStyles";
 import Post from "../components/Post";
 import { useDispatch, useSelector } from "react-redux";
-import { selectEmail, selectPosts, selectUserName } from "../redux/selectors";
+import {
+  selectEmail,
+  selectPosts,
+  selectUser,
+  selectUserFirebase,
+  selectUserName,
+} from "../redux/selectors";
 import { auth } from "../config";
 import { useEffect, useState } from "react";
 import {
@@ -12,14 +18,18 @@ import {
   postsCollectionRef,
 } from "../servises/posts.services";
 import { onSnapshot } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
+import { refreshUser } from "../redux/authSlice";
+// import { logIn, logOut } from "../redux/authSlice";
 
 export const PostsScreen = () => {
   const posts = useSelector(selectPosts);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const [user, setUser] = useState(null);
   const [postsData, setPostsData] = useState([]);
-
+  // console.log("Користувач", user);
   useEffect(() => {
     const unsubscribe = onSnapshot(postsCollectionRef, (snapshot) => {
       const newData = snapshot.docs.map((doc) => ({
@@ -40,21 +50,6 @@ export const PostsScreen = () => {
       unsubscribe();
     };
   }, []);
-
-  if (!user) {
-    return (
-      <View
-        style={[
-          globalStyles.container,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
-        <Text style={{ fontFamily: "Roboto-Medium", fontSize: 22 }}>
-          Please, wait...
-        </Text>
-      </View>
-    );
-  }
 
   return (
     <>

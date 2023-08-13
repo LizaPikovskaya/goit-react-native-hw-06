@@ -28,7 +28,7 @@ const Post = ({
 }) => {
   const [location, setLocation] = useState(null);
   const [commentsData, setCommentsData] = useState([]);
-  console.log(commentsData);
+  // console.log(commentsData);
   const navigation = useNavigation();
   const postId = id;
 

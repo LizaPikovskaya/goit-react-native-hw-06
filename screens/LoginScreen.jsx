@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,10 +14,11 @@ import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { BackgroundComponent } from "../components/BackgroundComponent";
-import { useDispatch } from "react-redux";
-import { logIn } from "../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn, refreshUser } from "../redux/authSlice";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config";
+import { selectUserFirebase } from "../redux/selectors";
 
 export const Login = () => {
   const navigation = useNavigation();
@@ -26,10 +27,20 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // const handleSubmit = (evt) => {
-  //   console.log({ email, password });
-  // };
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setLoading(false);
+      if (user) {
+        navigation.navigate("Home");
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   const togglePassword = () => {
     setSecureTextEntry(!secureTextEntry);
     navigation.navigate("Home");
@@ -43,12 +54,27 @@ export const Login = () => {
         password
       );
       dispatch(logIn({ email, password }));
-      navigation.navigate("Home")
+      navigation.navigate("Home");
       return credentials.user;
     } catch (error) {
       alert(error.message);
     }
   };
+  if (loading) {
+    return (
+      <View
+        style={[
+          globalStyles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <Text style={{ fontFamily: "Roboto-Medium", fontSize: 22 }}>
+          Please, wait...
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={globalStyles.container}>
@@ -200,5 +226,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 81,
     right: -12.5,
+  },
+  lottie: {
+    width: 100,
+    height: 100,
   },
 });

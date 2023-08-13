@@ -8,7 +8,7 @@ import { logOut } from "../redux/authSlice";
 
 export const HeaderLogoutButton = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleLogOut = () => {
     auth
       .signOut()

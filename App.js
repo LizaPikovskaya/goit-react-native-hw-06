@@ -1,6 +1,12 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, ImageBackground, Keyboard, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  Keyboard,
+  Text,
+} from "react-native";
 import { Registration } from "./screens/RegistrationScreen";
 import { Login } from "./screens/LoginScreen";
 import { useFonts } from "expo-font";
@@ -15,15 +21,20 @@ import { BackButton } from "./components/BackButton";
 import { PostsScreen } from "./screens/PostsScreen";
 import { CommentsScreen } from "./screens/CommentsScreen";
 import { MapScreen } from "./screens/MapScreen";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import {persistor} from "./redux/store"
+import { persistor } from "./redux/store";
+import { useNavigation } from "@react-navigation/native";
+import { auth } from "./config";
+import { useEffect, useState } from "react";
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
   });
+
   if (!fontsLoaded) {
     return null;
   }
@@ -33,7 +44,7 @@ export default function App() {
     <Provider store={store}>
       {/* <PersistGate loading={null} persistor={persistor}> */}
       <NavigationContainer>
-        <MainStack.Navigator initialRouteName="Home">
+        <MainStack.Navigator initialRouteName="Login">
           <MainStack.Screen
             name="Home"
             component={Home}

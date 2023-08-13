@@ -12,7 +12,7 @@ export const authSlice = createSlice({
       state.user.email = payload.email;
       state.user.password = payload.password;
     },
-    logIn(state, {payload}) {
+    logIn(state, { payload }) {
       state.user = payload;
     },
     logOut(state) {
@@ -21,5 +21,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { createUser, logIn, logOut } = authSlice.actions;
+export const { createUser, logIn, logOut, refreshUser } = authSlice.actions;
 export const authReducer = authSlice.reducer;
