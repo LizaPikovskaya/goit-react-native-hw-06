@@ -43,7 +43,6 @@ export const Login = () => {
 
   const togglePassword = () => {
     setSecureTextEntry(!secureTextEntry);
-    navigation.navigate("Home");
   };
 
   const handleSubmit = async () => {
