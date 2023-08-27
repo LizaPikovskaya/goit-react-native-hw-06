@@ -6,17 +6,11 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView,
 } from "react-native";
-import { Text } from "react-native";
 import { globalStyles } from "../globalStyles";
 import Comment from "../components/Comment";
 import { ArrowUp } from "../components/icons/Icons";
 import { useEffect, useState } from "react";
-import {
-  addCommentFirebase,
-  getAllCommentsFirebase,
-} from "../servises/comments.servises";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { db } from "../config";
 import { collection, addDoc, getDocs } from "firebase/firestore";
@@ -84,7 +78,7 @@ export const CommentsScreen = ({ route }) => {
               paddingLeft: 16,
               paddingRight: 16,
               paddingBottom: isOpenKeyboard ? 100 : 16,
-              justifyContent: "flex-end", 
+              justifyContent: "flex-end",
             },
           ]}
         >

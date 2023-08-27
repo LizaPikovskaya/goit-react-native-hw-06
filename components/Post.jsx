@@ -2,20 +2,11 @@ import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { View } from "react-native";
 import { Comments, LocationIcon, Trash } from "../components/icons/Icons";
 import { useNavigation } from "@react-navigation/native";
-import * as Location from "expo-location";
+// import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import { db } from "../config";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  getDocs,
-  onSnapshot,
-} from "firebase/firestore";
-import {
-  deletePostFirebase,
-  getAllPostsFirebase,
-} from "../servises/posts.services";
+import { collection, onSnapshot } from "firebase/firestore";
+import { deletePostFirebase } from "../servises/posts.services";
 
 const Post = ({
   id,

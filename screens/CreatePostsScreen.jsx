@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView,
   Platform,
 } from "react-native";
 import { Text } from "react-native";
@@ -67,8 +66,6 @@ export const CreatePostsScreen = () => {
           },
           commentsNumber: 0,
         });
-
-
       } catch (error) {
         console.log(error);
       }

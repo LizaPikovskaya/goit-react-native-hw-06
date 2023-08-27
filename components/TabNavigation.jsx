@@ -6,13 +6,9 @@ import { UserIcon, PlusIcon, GridIcon } from "./icons/Icons";
 import { StyleSheet, View } from "react-native";
 import { HeaderLogoutButton } from "./HeaderLogoutButton";
 import { BackButton } from "./BackButton";
-import { createStackNavigator } from "@react-navigation/stack";
-
 
 const Tab = createBottomTabNavigator();
 const TabNavigation = () => {
-
-
   return (
     <Tab.Navigator
       initialRouteName="Posts"

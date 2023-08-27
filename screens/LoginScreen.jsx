@@ -7,18 +7,16 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
-  ImageBackground,
 } from "react-native";
 import { globalStyles } from "../globalStyles";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { BackgroundComponent } from "../components/BackgroundComponent";
-import { useDispatch, useSelector } from "react-redux";
-import { logIn, refreshUser } from "../redux/authSlice";
+import { useDispatch } from "react-redux";
+import { logIn } from "../redux/authSlice";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config";
-import { selectUserFirebase } from "../redux/selectors";
 
 export const Login = () => {
   const navigation = useNavigation();

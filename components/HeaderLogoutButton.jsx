@@ -1,4 +1,4 @@
-import { TouchableOpacity, useAnimatedValue } from "react-native";
+import { TouchableOpacity } from "react-native";
 import * as React from "react";
 import { LogoutIcon } from "./icons/Icons";
 import { auth } from "../config";

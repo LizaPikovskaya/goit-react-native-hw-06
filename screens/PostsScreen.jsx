@@ -1,25 +1,15 @@
-import { FlatList, Image, SafeAreaView, StyleSheet, Text } from "react-native";
+import { FlatList, Image, Text } from "react-native";
 // import TabNavigation, { FocusedIcon } from "../components/TabNavigation";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { globalStyles } from "../globalStyles";
 import Post from "../components/Post";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectEmail,
-  selectPosts,
-  selectUser,
-  selectUserFirebase,
-  selectUserName,
-} from "../redux/selectors";
+import { selectPosts } from "../redux/selectors";
 import { auth } from "../config";
 import { useEffect, useState } from "react";
-import {
-  getAllPostsFirebase,
-  postsCollectionRef,
-} from "../servises/posts.services";
+import { postsCollectionRef } from "../servises/posts.services";
 import { onSnapshot } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
-import { refreshUser } from "../redux/authSlice";
 // import { logIn, logOut } from "../redux/authSlice";
 
 export const PostsScreen = () => {

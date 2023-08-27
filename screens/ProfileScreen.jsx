@@ -4,10 +4,7 @@ import { View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { CloseIcon, LogoutIcon } from "../components/icons/Icons";
 import { ProfilePost } from "../components/ProfilePost";
-import { useSelector } from "react-redux";
-import { selectUserName } from "../redux/selectors";
 import { auth } from "../config";
-
 
 export const ProfileScreen = () => {
   const userName = auth.currentUser?.displayName;

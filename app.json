@@ -19,7 +19,9 @@
         }
       ]
     ],
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.yourcompany.goit-react-native-hw-06",
       "supportsTablet": true,
@@ -28,14 +30,23 @@
       }
     },
     "android": {
-      "package": "com.yourcompany.goit-react-native-hw-06",
+      "package": "com.lizapikovska.goitreactnativehw06",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "81f08c30-c68b-4a07-95de-1f255d7b09da"
+      }
     }
   }
 }

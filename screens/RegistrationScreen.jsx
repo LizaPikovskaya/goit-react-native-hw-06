@@ -1,4 +1,4 @@
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Keyboard,
   KeyboardAvoidingView,
-  ImageBackground,
 } from "react-native";
 import { globalStyles } from "../globalStyles";
 import { TouchableWithoutFeedback } from "react-native";
@@ -49,7 +48,7 @@ export const Registration = () => {
     console.log({ login, email, password });
     createUserWithEmailAndPassword(auth, email, password)
       .then((userInfo) => {
-        const user = userInfo.user
+        const user = userInfo.user;
         updateUserProfile(user);
         console.log(user);
         dispatch(createUser({ email, password }));
